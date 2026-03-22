@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: epp
+  namespace: benchmark
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: epp
+  template:
+    metadata:
+      labels:
+        app: epp
+    spec:
+      containers:
+        - name: epp
+          image: us-central1-docker.pkg.dev/k8s-staging-images/gateway-api-inference-extension/epp:latest
+          args:
+          - --poolName=llm-pool
+          - --poolNamespace=benchmark
+          - --v=4
+          ports:
+          - containerPort: 9002
+            name: grpc
+          - containerPort: 9003
+            name: metrics
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: epp-service
+  namespace: benchmark
+spec:
+  selector:
+    app: epp
+  ports:
+  - name: grpc
+    port: 9002
+    targetPort: 9002

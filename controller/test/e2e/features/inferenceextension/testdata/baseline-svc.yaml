@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: llm-sim-svc
+  namespace: benchmark
+spec:
+  selector:
+    app: llm-sim
+  ports:
+  - port: 8000
+    targetPort: 8000

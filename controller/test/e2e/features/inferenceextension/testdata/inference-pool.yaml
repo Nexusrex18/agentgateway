@@ -1,0 +1,14 @@
+apiVersion: inference.networking.x-k8s.io/v1
+kind: InferencePool
+metadata:
+  name: llm-pool
+  namespace: benchmark
+spec:
+  targetPorts:
+  - 8080
+  selector:
+    matchLabels:
+      app: llm-sim
+  endpointPickerRef:
+    name: epp-service
+    port: 9002
